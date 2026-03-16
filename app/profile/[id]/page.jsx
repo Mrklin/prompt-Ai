@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 import Profile from "@components/Profile";
 
-const UserProfile = ({params}) => {
+const ProfileContent = ({params}) => {
 
     // const router = useRouter();
     const [userPrompts, setUserPrompts] = useState([])
     const searchParams = useSearchParams();
-    const userName = searchParams.get('id')
+    const userName = searchParams.get('name')
 
     useEffect(()=> {
         const fetchPrompts = async () => {
@@ -42,15 +42,27 @@ const UserProfile = ({params}) => {
     
 
   return (
+
     <Profile 
-        name={userName}
+        name={userName || "User"}
         desc={`Welcome to ${userName}'s personalized profile page. 
             Explore ${userName}'s collection of prompts and get inspired!`}
         data ={userPrompts}
         // handleEdit={handleEdit}
         // handleDelete={handleDelete}
     />
+
+    
   )
+}
+
+const UserProfile = ({params}) => {
+
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ProfileContent params={params} />
+        </Suspense>
+    )
 }
 
 export default UserProfile
