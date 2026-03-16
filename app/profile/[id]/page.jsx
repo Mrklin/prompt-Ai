@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense , use} from "react";
 import { useSearchParams } from "next/navigation";
 
 import Profile from "@components/Profile";
@@ -8,19 +8,22 @@ import Profile from "@components/Profile";
 const ProfileContent = ({params}) => {
 
     // const router = useRouter();
+    const unWrappedParams = use(params)
     const [userPrompts, setUserPrompts] = useState([])
     const searchParams = useSearchParams();
     const userName = searchParams.get('name')
 
     useEffect(()=> {
         const fetchPrompts = async () => {
-            const response  = await fetch(`/api/users/${params?.id}/posts`)
+            const response  = await fetch(`/api/users/${unWrappedParams?.id}/posts`)
             const data = await response.json()
+
+            console.log("Fetched Data:", data);
 
             setUserPrompts(data)
         }
-        if(params.id) fetchPrompts()
-    },[params.id])
+        if(unWrappedParams?.id) fetchPrompts()
+    },[unWrappedParams.id])
 
 
     // const handleDelete = async (prompt) => {
@@ -47,7 +50,7 @@ const ProfileContent = ({params}) => {
         name={userName || "User"}
         desc={`Welcome to ${userName}'s personalized profile page. 
             Explore ${userName}'s collection of prompts and get inspired!`}
-        data ={userPrompts}
+        data = {userPrompts}
         // handleEdit={handleEdit}
         // handleDelete={handleDelete}
     />
