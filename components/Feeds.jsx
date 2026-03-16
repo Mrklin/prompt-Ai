@@ -13,7 +13,7 @@ const Feeds = () => {
 
     useEffect(() => {
       const fetchPrompts = async () => {
-        const response = await fetch('/api/prompt')
+        const response = await fetch('/api/prompt', {cache: 'no-store'})
         const data = await response.json();
 
         setPrompts(data)
@@ -24,7 +24,7 @@ const Feeds = () => {
     const filterPrompts = (searchtext) => {
         const regex = new RegExp(searchtext, 'i') // 'i' flag for case-insensitive search
         return prompts.filter((item) =>
-            regex.test(item.creator.username) ||
+            regex.test(item.creator?.username) ||
             regex.test(item.tag) ||
             regex.test(item.prompt)
         )
