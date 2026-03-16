@@ -1,20 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react"
-import { Suspense } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation";
 import Form from "@components/Form";
 
-const EditPrompt = () => {
+const EditPromptForm = () => {
 
     const router = useRouter();
     const searchParams = useSearchParams();
     const promptId = searchParams.get('id')
     const [submit, setSubmit] = useState(false)
-    const [post, setPost] = useState({
-     prompt: "",
-     tag: ""
-    })
+    const [post, setPost] = useState({ prompt: "", tag: "" })
 
     useEffect(() => {
         const getPromptDetails = async () => {
@@ -23,7 +19,7 @@ const EditPrompt = () => {
             const data = await response.json();
 
             setPost({
-                prompt: data.prompt ,
+                prompt: data.prompt,
                 tag: data.tag
             })
         }
@@ -62,7 +58,7 @@ const EditPrompt = () => {
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+
         <Form 
         type="Edit"
         post={post}
@@ -70,9 +66,15 @@ const EditPrompt = () => {
         submit={submit}
         handleSubmit={updatePrompt}
     />
-    </Suspense>
   )
 }
     
+const EditPrompt = () => {
+    return (
+        <Suspense fallback={<p className="text-center font-bold">Loading...</p>}>
+            <EditPromptForm />
+        </Suspense>
+    )
+}
 
 export default EditPrompt
