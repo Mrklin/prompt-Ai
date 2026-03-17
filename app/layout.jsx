@@ -21,7 +21,7 @@ const RootLayout = ({children}) => {
             </main>
             </Provider>
         </body>
-        
+         
     </html>
   )
 }
